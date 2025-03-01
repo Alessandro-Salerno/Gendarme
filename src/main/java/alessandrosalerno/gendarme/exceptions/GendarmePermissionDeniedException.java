@@ -1,4 +1,4 @@
 package alessandrosalerno.gendarme.exceptions;
 
-public class GendarmePermissionDeniedException {
+public class GendarmePermissionDeniedException extends RuntimeException {
 }
