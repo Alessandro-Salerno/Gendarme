@@ -1,14 +1,15 @@
 package alessandrosalerno.gendarme;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class GendarmeTable extends ArrayList<HashMap<String, Object>> {
+public class GendarmeTable {
+    private final ArrayList<HashMap<String, Object>> table;
     private final String[] columns;
 
     public GendarmeTable(String... columns) {
         this.columns = columns;
+        this.table = new ArrayList<>();
     }
 
     public GendarmeTable addRow(Object... cells) {
@@ -22,7 +23,7 @@ public class GendarmeTable extends ArrayList<HashMap<String, Object>> {
             row.put(this.columns[i], cells[i]);
         }
 
-        this.add(row);
+        this.table.add(row);
         return this;
     }
 
@@ -35,11 +36,11 @@ public class GendarmeTable extends ArrayList<HashMap<String, Object>> {
     }
 
     public int getRowCount() {
-        return this.size();
+        return this.table.size();
     }
 
     public Object getCell(String column, int row) {
-        return this.get(row).get(column);
+        return this.table.get(row).get(column);
     }
 
     @Override

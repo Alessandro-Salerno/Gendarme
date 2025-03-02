@@ -4,6 +4,7 @@ import alessandrosalerno.gendarme.exceptions.GendarmeAccessRestrictedException;
 import alessandrosalerno.gendarme.exceptions.GendarmePermissionDeniedException;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 
 public class GendarmeMethodContainer<UserType extends GendarmeUser> implements GendarmeInvokable<UserType> {
@@ -89,7 +90,7 @@ public class GendarmeMethodContainer<UserType extends GendarmeUser> implements G
     }
 
     @Override
-    public Class<?>[] getParameterTypes() {
-        return this.parameterTypes;
+    public Parameter[] getParameters() {
+        return this.method.getParameters();
     }
 }

@@ -1,6 +1,7 @@
 package alessandrosalerno.gendarme;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Parameter;
 
 public class GendarmeFieldContainer<UserType extends GendarmeUser> implements GendarmeInvokable<UserType> {
     private final Field field;
@@ -33,9 +34,9 @@ public class GendarmeFieldContainer<UserType extends GendarmeUser> implements Ge
     }
 
     @Override
-    public Class<?>[] getParameterTypes() {
+    public Parameter[] getParameters() {
         this.evaluateField();
-        return this.fieldValue.getParameterTypes();
+        return this.fieldValue.getParameters();
     }
 
     private void evaluateField() {

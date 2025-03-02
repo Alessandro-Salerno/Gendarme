@@ -7,6 +7,7 @@ import alessandrosalerno.gendarme.annotations.GendarmeRequirePermission;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class GendarmeCommandGroup<UserType extends GendarmeUser> implements GendarmeInvokable<UserType> {
@@ -114,7 +115,7 @@ public class GendarmeCommandGroup<UserType extends GendarmeUser> implements Gend
     }
 
     @Override
-    public Class<?>[] getParameterTypes() {
-        return new Class[]{String.class, null};
+    public Parameter[] getParameters() {
+        return null;
     }
 }
