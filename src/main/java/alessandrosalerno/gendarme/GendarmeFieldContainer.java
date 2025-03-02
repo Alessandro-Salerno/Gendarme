@@ -39,6 +39,11 @@ public class GendarmeFieldContainer<UserType extends GendarmeUser> implements Ge
         return this.fieldValue.getParameters();
     }
 
+    public boolean contains(Class<?> type) {
+        this.evaluateField();
+        return type.isAssignableFrom(this.fieldValue.getClass());
+    }
+
     private void evaluateField() {
         if (null == this.fieldValue) {
             try {

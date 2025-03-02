@@ -1,46 +1,63 @@
 package alessandrosalerno.gendarme;
 
-public class GendarmeHelper {
-    private final GendarmeInvokable<?> target;
+import alessandrosalerno.gendarme.annotations.GendarmeCommand;
+import alessandrosalerno.gendarme.annotations.GendarmeDescription;
 
-    public GendarmeHelper(GendarmeInvokable<?> target) {
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.List;
+
+public class GendarmeHelper {
+    private final GendarmeCommandGroup<?> target;
+
+    public GendarmeHelper(GendarmeCommandGroup<?> target) {
         this.target = target;
     }
 
     public GendarmeResponse getHelp() {
-        GendarmeResponse res = new GendarmeResponse("Help menu");
-        return res;
+        GendarmeResponse res = new GendarmeResponse("", "Command", "Signature", "Description");
 
-//        try {
-//            for (Field f : this.target.getClass().getFields()) {
-//                if (f.getType().isInstance(GendarmeInvokable.class)) {
-//                    GendarmeInvokable<?> command = GendarmeInvokable.class.cast(f.get(this));
-//                    Map<String, Object> row = new HashMap<>();
-//                    row.put("name", f.getName());
-//                    row.put("parameter types", this.joinTypes(command.getParameterTypes()))
-//                }
-//            }
-//
-//            for (Method m : this.getClass().getMethods()) {
-//                if (m.isAnnotationPresent(GendarmeCommand.class)) {
-//                    GendarmeMethodAdapter<UserType> container = new GendarmeMethodAdapter<>(m, this);
-//                    container.setRequiredAuthentication(m.isAnnotationPresent(GendarmeRequireAuthentication.class));
-//
-//                    if (m.isAnnotationPresent(GendarmeRequirePermission.class)) {
-//                        GendarmeRequirePermission perm = m.getAnnotation(GendarmeRequirePermission.class);
-//                        container.setRequiredPermission(perm.value());
-//                    }
-//
-//                    if (m.isAnnotationPresent(GendarmeDescription.class)) {
-//                        GendarmeDescription desc = m.getAnnotation(GendarmeDescription.class);
-//                        container.setDescription(desc.value());
-//                    }
-//
-//                    this.addCommand(m.getName(), container);
-//                }
-//            }
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
+        for (String commandName : this.target.subcommands.keySet()) {
+            List<? extends GendarmeInvokable<?>> commands = this.target.subcommands.get(commandName);
+
+            for (GendarmeInvokable<?> command : commands) {
+                res.addTableRow(commandName, this.generateSignature(command), command.getDescription());
+            }
+        }
+
+        return res;
+    }
+
+    private String generateSignature(GendarmeInvokable<?> of) {
+        if (of instanceof GendarmeFieldContainer<?> container
+            && container.contains(GendarmeCommandGroup.class)) {
+            return "String inner";
+        }
+
+        return this.generateMethodSignature(of.getParameters());
+    }
+
+    private String generateMethodSignature(Parameter[] params) {
+        StringBuilder builder = new StringBuilder();
+
+        if (null == params) {
+            return "???";
+        }
+
+        for (int i = 1; i < params.length; i++) {
+            String name = "arg" + i;
+            if (params[i].isNamePresent()) {
+                name = params[i].getName();
+            }
+
+            builder.append(params[i].getType().getSimpleName()).append(" ").append(name);
+
+            if (i != params.length - 1) {
+                builder.append(", ");
+            }
+        }
+
+        return builder.toString();
     }
 }

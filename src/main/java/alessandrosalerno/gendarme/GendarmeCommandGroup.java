@@ -11,7 +11,7 @@ import java.lang.reflect.Parameter;
 import java.util.*;
 
 public class GendarmeCommandGroup<UserType extends GendarmeUser> implements GendarmeInvokable<UserType> {
-    private final Map<String, List<GendarmeInvokable<UserType>>> subcommands;
+    protected final Map<String, List<GendarmeInvokable<UserType>>> subcommands;
     private String description;
     private final GendarmeHelper helper;
 
