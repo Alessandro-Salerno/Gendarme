@@ -1,5 +1,7 @@
 package alessandrosalerno.gendarme;
 
+import alessandrosalerno.gendarme.exceptions.GendarmeException;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Parameter;
 
@@ -16,7 +18,7 @@ public class GendarmeFieldContainer<UserType extends GendarmeUser> implements Ge
     }
 
     @Override
-    public GendarmeResponse invoke(UserType commandIssuer, Object... args) {
+    public GendarmeResponse invoke(UserType commandIssuer, Object... args) throws GendarmeException {
         this.evaluateField();
         return this.fieldValue.invoke(commandIssuer, args);
     }

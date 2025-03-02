@@ -1,6 +1,7 @@
 package alessandrosalerno.gendarme;
 
 import alessandrosalerno.gendarme.exceptions.GendarmeAccessRestrictedException;
+import alessandrosalerno.gendarme.exceptions.GendarmeException;
 import alessandrosalerno.gendarme.exceptions.GendarmePermissionDeniedException;
 
 import java.lang.reflect.Method;
@@ -45,13 +46,13 @@ public class GendarmeMethodContainer<UserType extends GendarmeUser> implements G
     }
 
     @Override
-    public GendarmeResponse invoke(UserType commandIssuer, Object... args) {
+    public GendarmeResponse invoke(UserType commandIssuer, Object... args) throws GendarmeException {
         if (this.requiresAuthentication && !commandIssuer.isAuthenticated()) {
-            throw new GendarmeAccessRestrictedException();
+            throw new GendarmeAccessRestrictedException(this.method.getName());
         }
 
         if (null != this.requiresPermission && !commandIssuer.hasPermission(this.requiresPermission)) {
-            throw new GendarmePermissionDeniedException();
+            throw new GendarmePermissionDeniedException(this.method.getName(), this.requiresPermission);
         }
 
         try {

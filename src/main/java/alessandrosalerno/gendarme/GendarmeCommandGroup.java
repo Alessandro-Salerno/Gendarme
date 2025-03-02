@@ -4,6 +4,7 @@ import alessandrosalerno.gendarme.annotations.GendarmeCommand;
 import alessandrosalerno.gendarme.annotations.GendarmeDescription;
 import alessandrosalerno.gendarme.annotations.GendarmeRequireAuthentication;
 import alessandrosalerno.gendarme.annotations.GendarmeRequirePermission;
+import alessandrosalerno.gendarme.exceptions.GendarmeException;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -67,7 +68,7 @@ public class GendarmeCommandGroup<UserType extends GendarmeUser> implements Gend
     }
 
     @Override
-    public GendarmeResponse invoke(UserType commandIssuer, Object... args) {
+    public GendarmeResponse invoke(UserType commandIssuer, Object... args) throws GendarmeException {
         if (0 == args.length) {
             return this.baseCommand(commandIssuer);
         }

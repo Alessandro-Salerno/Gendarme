@@ -13,7 +13,7 @@ public class OrderCommands extends GendarmeCommandGroup<MyUser> {
         @GendarmeRequireAuthentication
         @GendarmeRequirePermission("order.create.limit")
         @GendarmeDescription("Create a limit order")
-        public GendarmeResponse limit(MyUser commandIssuer, String symbol, int quantity, double price, String side) {
+        public GendarmeResponse limit(MyUser commandIssuer, String symbol, Long quantity, Double price, String side) {
             return new GendarmeResponse("Order created successfully");
         }
 
@@ -21,7 +21,7 @@ public class OrderCommands extends GendarmeCommandGroup<MyUser> {
         @GendarmeRequireAuthentication
         @GendarmeRequirePermission("order.create.market")
         @GendarmeDescription("Create a market order")
-        public GendarmeResponse market(MyUser commandIssuer, String symbol, int quantity, String side) {
+        public GendarmeResponse market(MyUser commandIssuer, String symbol, Long quantity, String side) {
             return new GendarmeResponse("Order created successfully");
         }
     }
